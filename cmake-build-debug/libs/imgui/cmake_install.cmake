@@ -1,4 +1,4 @@
-# Install script for directory: /home/wei/Desktop/RG/libs/imgui
+# Install script for directory: /home/wei/Desktop/maze/Maze/libs/imgui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

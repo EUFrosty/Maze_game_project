@@ -1,4 +1,4 @@
-# Install script for directory: /home/wei/Desktop/RG/libs/glad
+# Install script for directory: /home/wei/Desktop/maze/Maze/libs/glad
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
