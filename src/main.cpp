@@ -12,6 +12,7 @@
 #include <learnopengl/camera.h>
 #include <learnopengl/model.h>
 #include <iostream>
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
@@ -78,6 +79,36 @@ float lastX = 800.0f / 2.0f;
 float lastY = 800.0f / 2.0f;
 bool firstMouse = true;
 
+float x = -0.125;
+float y = -0.875;
+
+float x_point = -0.125;
+float y_point = -0.875;
+unsigned square = 14;
+unsigned square1 = 14;
+
+std::vector<vector<unsigned int>> graph = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+                                           {}, {12, 21}, {11, 13, 22}, {12, 23}, {24}, {16, 25}, {15}, {18}, {17, 28}, {},
+                                           {}, {11, 31}, {12, 32}, {13, 24, 33}, {14, 23, 25}, {15, 24}, {27, 36}, {26}, {18 ,38}, {},
+                                           {}, {21}, {22, 42}, {23, 43}, {35, 44}, {34, 36}, {26, 35, 37, 46}, {36}, {28, 48}, {},
+                                           {}, {42, 51}, {32, 41}, {33, 53}, {34, 45}, {44, 55}, {36, 47, 56}, {46, 48}, {38, 47}, {},
+                                           {}, {41, 61}, {53}, {43, 52, 54}, {53}, {45, 65}, {46, 57, 66}, {56, 58}, {57}, {},
+                                           {}, {51, 62, 71}, {61, 63}, {62, 64}, {63, 65}, {55, 64, 75}, {56, 67, 76}, {66, 68}, {67}, {},
+                                           {}, {61}, {73, 82}, {72, 83}, {75}, {65, 74}, {66, 77}, {76, 78}, {77, 88}, {},
+                                           {}, {82}, {72, 81}, {73, 84}, {83, 85}, {84, 86}, {85, 87}, {86, 88}, {87, 78}, {},
+                                           {}, {}, {}, {}, {}, {}, {}, {}, {}, {}};
+
+//std::vector<vector<bool>> graph = {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, d{}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+//                                   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},};
+
 int main() {
     glfwInit();
 
@@ -134,13 +165,13 @@ int main() {
     glCullFace(GL_BACK);
 
     Shader shader("resources/shaders/vertexShader.vs", "resources/shaders/fragmentShader.fs");
-    Shader shader1("resources/shaders/vertexShaderBottom.vs", "resources/shaders/fragmentShaderBottom.fs");
+    Shader shader1("resources/shaders/vertexShader.vs", "resources/shaders/fragmentShaderBottom.fs");//vertexShaderBottom
     Shader shader2("resources/shaders/lightCubevs.vs", "resources/shaders/lightCubefs.fs");
     Shader shader3("resources/shaders/vertexShader.vs", "resources/shaders/fragmentShader.fs");
     Model ourModel("resources/objects/flashlight/Linterna.obj");
     Shader shaderModel("resources/shaders/Model.vs", "resources/shaders/Model.fs");
-    Shader skyboxShader("/home/wei/Desktop/ProjekatRG/RG/resources/shaders/skybox.vs", "/home/wei/Desktop/ProjekatRG/RG/resources/shaders/skybox.fs");
-    Shader shaderBlending("resources/shaders/blending1.vs", "resources/shaders/blending1.fs");
+    Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
+    Shader shaderBlending("resources/shaders/vertexShader.vs", "resources/shaders/blending1.fs");
 
     //object creation
 
@@ -306,6 +337,7 @@ int main() {
     shader3.use();
     shader3.setInt("t3", 0);
 
+    //skybox
 
     unsigned int skyboxVAO, skyboxVBO;
     glGenVertexArrays(1, &skyboxVAO);
@@ -463,7 +495,7 @@ int main() {
         glBindVertexArray(VAO[2]);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-        //dodeljivanje promenljivih za shader igraca i crtanje
+        //player placeholder shader
         shader3.use();
 
         shader3.setVec3("light.position", programState->camera.Position);
@@ -547,7 +579,7 @@ int main() {
         // skybox cube
         glBindVertexArray(skyboxVAO);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+        glBindTexture(GL_TEXTURE_2D, cubemapTexture);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
@@ -600,21 +632,93 @@ void update(GLFWwindow* window) {
         std::cerr << "Reset\n";
     }
 
+    square = ((int)((x/0.25)+5)) + 10*((int)((y/0.25)+5));
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        programState->camera.Position += glm::vec3(0, 0.005, 0);
-        modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, 0.005, 0.0));
+        if(y > y_point + 0.065){
+            bool check = false;
+            for (int i = 0; i < graph[square].size(); i++){
+                if (graph[square][i] == square + 10) {
+                    check = true;
+                    y_point += 0.25;
+                    break;
+                }
+            }
+            if(check){
+                y = y + 0.005;
+                programState->camera.Position += glm::vec3(0, 0.005, 0);
+                modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, 0.005, 0.0));
+            }
+        }else {
+            y = y + 0.005;
+            programState->camera.Position += glm::vec3(0, 0.005, 0);
+            modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, 0.005, 0.0));
+        }
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        programState->camera.Position += glm::vec3(-0.005, 0, 0);
-        modelIgraca = glm::translate(modelIgraca, glm::vec3(-0.005, 0.0, 0.0));
+        if(x < x_point - 0.065){
+            bool check = false;
+            for (int i = 0; i < graph[square].size(); i++){
+                if (graph[square][i] == square - 1) {
+                    check = true;
+                    x_point -= 0.25;
+                    break;
+                }
+            }
+            if(check) {
+                x = x - 0.005;
+                programState->camera.Position += glm::vec3(-0.005, 0, 0);
+                modelIgraca = glm::translate(modelIgraca, glm::vec3(-0.005, 0.0, 0.0));
+            }
+        }else {
+            x = x - 0.005;
+            programState->camera.Position += glm::vec3(-0.005, 0, 0);
+            modelIgraca = glm::translate(modelIgraca, glm::vec3(-0.005, 0.0, 0.0));
+        }
     }
+
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        programState->camera.Position += glm::vec3(0, -0.005, 0);
-        modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, -0.005, 0.0));
+        if(y < y_point - 0.065){
+            bool check = false;
+            for (int i = 0; i < graph[square].size(); i++){
+                if (graph[square][i] == square - 10) {
+                    check = true;
+                    y_point -= 0.25;
+                    break;
+                }
+            }
+            if(check){
+                y = y - 0.005;
+                programState->camera.Position += glm::vec3(0, -0.005, 0);
+                modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, -0.005, 0.0));
+            }
+        }else {
+            y = y - 0.005;
+            programState->camera.Position += glm::vec3(0, -0.005, 0);
+            modelIgraca = glm::translate(modelIgraca, glm::vec3(0.0, -0.005, 0.0));
+        }
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        programState->camera.Position += glm::vec3(0.005, 0, 0);
-        modelIgraca = glm::translate(modelIgraca, glm::vec3(0.005, 0.0, 0.0));
+        if(x > x_point + 0.07){
+            bool check = false;
+            for (int i = 0; i < graph[square].size(); i++){
+                if (graph[square][i] == square + 1) {
+                    check = true;
+                    x_point += 0.25;
+                    break;
+                }
+            }
+            if(check){
+                x = x + 0.005;
+                programState->camera.Position += glm::vec3(0.005, 0, 0);
+                modelIgraca = glm::translate(modelIgraca, glm::vec3(0.005, 0.0, 0.0));
+            }
+
+        }else {
+            x = x + 0.005;
+            programState->camera.Position += glm::vec3(0.005, 0, 0);
+            modelIgraca = glm::translate(modelIgraca, glm::vec3(0.005, 0.0, 0.0));
+        }
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
         programState->camera.ProcessKeyboard(UP, deltaTime);
