@@ -1,4 +1,4 @@
-Kontrole:
+Controls:
 -The player cube is moved around with W,S,A i D.
 Camera only movement is done with arrow keys.
 -F1 turns on the ImGui console.
