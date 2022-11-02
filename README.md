@@ -1,19 +1,12 @@
 Kontrole:
--Kocka se sa kamerom pomera dugmicima W,S,A i D.
-Za pomeranje samo kamere se koriste strelice.
--Sa F1 se pali ImGui konzola u kojoj se mozepodesavati ambientalno osvetljenje po bojama RGB.
--U ImGui konzoli se takodje ispisuju neke informacije o kameri i dok je konzola upaljena moguce je pomerati kameru misem ako je checkbox stikliran.
--Dugmicima E i Q je moguce pomerati kameru u napred i u nazad tim redosledom.
--Dugmicima P i B se menja izmedju Phongovog i Blinnovog modela osvetljenja.
--U slucaju kad se kamera pomeri u neku cudnu lkaciju, dugmetom R je moguce vratiti je nazad na nasu kocku.
+-The player cube is moved around with W,S,A i D.
+Camera only movement is done with arrow keys.
+-F1 turns on the ImGui console.
+-In the ImGui konsole it's possible to check the box and allow/not allow mouse camera movement.
+-E and Q move the camera forward and backward.
+-P i B switch between Phong and Blinn models of lighting.
+-R key can be pressed to center the camera on out player cube.
 
-Poenta lavirinta je naci izgubljeni objekat. Kada objekat bude nadjen, igrica ce se ugasiti i u konzoli ce biti ispisano vreme za koje je on nadjen.
+The point of the game is for the player to find the flashlight. When the task is complete, the game will close and write out the time it took the player to complete it.
 
-U projektu je implementirano sve sto smo presli na vezbama od prve zakljucno sa osmom nedeljom, kao i discard blending, face culling i Blinn-Phong osvetljenje.
-Iz grupe A je implementiran skybox(cubemaps).
-
-Link za kratak yt klip: https://youtu.be/v3-l5XBalPI
-
-Okacio sam sve na dropboxu jer sam imao previse problema sa virtuelnom masinom i push-ovanjem projekta na git.
-
-https://drive.google.com/drive/folders/1yPf351-RpJzTpXCYRrhNYJ1qWW2yiHgv?usp=sharing
+Link to a short youtube clip: https://youtu.be/v3-l5XBalPI
